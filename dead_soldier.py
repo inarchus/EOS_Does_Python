@@ -49,7 +49,7 @@ def dead_soldier_graphical():
 				step = int(step_entry.getText())
 			except ValueError:
 				print('invalid type, go around')
-				click_pt = safe_get(main_window)
+				click_pt = main_window.getMouse()
 
 		centers = [None for _ in range(n)]
 		circles = [None for _ in range(n)]
