@@ -4,6 +4,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import datetime as dt
+import string
 
 
 def datetime_stuff():
@@ -163,5 +164,50 @@ def length_and_string():
         print(char)
 
 
+def enumerate_example():
+    
+    L = [random.choice(string.ascii_lowercase) for _ in range(10)]
+    print(L)
+    for i, c in enumerate(L):
+        print('the', i, 'th', 'letter is', c)
+        
+    L = [(random.randint(0, 10), random.choice(string.ascii_lowercase)) for _ in range(10)]
+    print(L)
+    for i, x, y in enumerate(L):
+        print(i, x, y)
 
-length_and_string()
+
+def file_operations():
+    # if you run this, you'll have to redownload the file
+    # first_file = open('first_file.txt', 'wb')
+    # first_file.write()
+    # first_file = open('first_file.txt', 'w+')
+
+    first_file = open('first_file.txt', 'r+')
+    print(first_file.readlines())
+    first_file.close()
+
+    first_file = open('first_file.txt', 'a+')
+    print(first_file.readlines())
+    first_file.close()
+    
+    def file_ops():
+        try:
+            f = open('blah.txt', 'r')
+            # really this means do something with the file
+            print(f.readlines())
+        except IOError:
+            print('The file was unable to be opened')
+        else:
+            f.close()
+            
+    # file_ops()
+    
+    
+    
+    
+
+
+#length_and_string()
+#enumerate_example()
+file_operations()
