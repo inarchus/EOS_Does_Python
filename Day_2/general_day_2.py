@@ -125,9 +125,42 @@ def lambda_stuff():
     print((lambda x: x * x)(17))
 
 
+def mapping_examples():
+    def square(x):
+        return x * x
+
+    L = [random.randint(0, 100) for _ in range(10)]
+    L2 = list(map(square, L))
+    L2A = list(map(lambda x: x*x, L))
+    print(L)
+    print(L2)
+    print(L2A)
+
+    list_of_floats = [32.123213, 21.8489456, 17.64643123123, 15.15484654]
+    rounded_floats = list(map(lambda x: round(x, 2), list_of_floats))
+    print(rounded_floats)
+
+    list_of_string_numbers = ['32', '79', '121', '577', '281', '83']
+    output_list = list(map(int, list_of_string_numbers))
+    print(list_of_string_numbers)
+    print(output_list)
+
+    # list_of_lambdas.append(lambda x: (x, i))
+    list_of_lambdas = []
+    for i in range(10):
+        list_of_lambdas.append(lambda x, k=i: (x, k))
+
+    output_list = []
+    for j in range(10):
+        output_list.append(list_of_lambdas[j](j))
+
+    print(output_list)
+
+
 # file_error()
 # try_try_and_try_again()
 # try_convert()
 # check_convert()
 # more_sorting()
-lambda_stuff()
+# lambda_stuff()
+mapping_examples()

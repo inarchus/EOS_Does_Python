@@ -152,4 +152,16 @@ def list_stuff():
     print(find, i, L5)
 
 
-list_stuff()
+def length_and_string():
+    s = 'hello, I am a string, and this has a length'
+    print(len(s))
+    L = [random.randint(0, 1000) for _ in range(random.randint(1, 10000))]
+    print(len(L))
+
+    hello_string = 'hello'
+    for char in hello_string:
+        print(char)
+
+
+
+length_and_string()
