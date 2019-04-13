@@ -157,10 +157,45 @@ def mapping_examples():
     print(output_list)
 
 
+def multiple_return_values():
+    
+    def do_something(x, y):
+        return x + y, x * y, x ** y, y ** x, x % y
+    
+    def messy(x, y, z):
+        if z % 2:
+            return x + y, x * y
+        else:
+            return x ** y, y ** x, x ^ y
+    
+    t = do_something(2, 7)
+    print(t)
+    
+    the_sum, product, first_exp, other_exp, modded = do_something(7, 39)
+    print(the_sum, product, first_exp, other_exp, modded)
+    
+    x_1, y_1 = messy(1, 2, 3)
+    x_2, y_2, z_2 = messy(4, 5, 6)
+    print(x_1, x_2, y_2, z_2)
+    x_3, y_3 = messy(4, 5, 8)
+    print(x_3, y_3)
+    
+    def good_and_evil():
+        return 'good', 'evil'
+    
+    keep_the_good, _ = good_and_evil()
+
+    list_brackets = []
+    list_constructor = list()
+
+    list_brackets.append(3)
+    list_constructor.append(17)
+    
 # file_error()
 # try_try_and_try_again()
 # try_convert()
 # check_convert()
 # more_sorting()
 # lambda_stuff()
-mapping_examples()
+# mapping_examples()
+multiple_return_values()
