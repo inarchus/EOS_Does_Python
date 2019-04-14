@@ -1,5 +1,5 @@
 import random
-
+from datetime import datetime, timedelta
 
 def sort_vs_sorted():
     L = [random.randint(0, 100) for _ in range(10)]
@@ -85,10 +85,6 @@ def file_error():
     return the_file
 
 
-def more_sorting():
-    pass
-
-
 def lbyl_vs_eapf():
     pass
 
@@ -155,7 +151,35 @@ def mapping_examples():
         output_list.append(list_of_lambdas[j](j))
 
     print(output_list)
+    
+    class Contact:
+        def __init__(self):
+            self.station = random.choice(['AS1', 'AS2', 'AS3','SG1', 'SG2', 'SG3', 'AK4','AK5', 'GLC'])
+            self.aos = datetime(year=2019, month=5, day=7, hour=random.randint(0, 23),
+                                minute=random.randint(0, 59), second=random.randint(0, 59))
+        
+    the_list = [Contact() for _ in range(10)]
+    new_list = sorted(the_list, key=lambda contact: contact.aos, reverse=True)
+    print(*list(contact.aos.strftime('%X') for contact in new_list))
+    
+    # MIN_MAX
+    
+    number_list = [random.uniform(-1, 1) for _ in range(10)]
+    min_value = number_list[0]
+    for x in number_list:
+        if x < min_value:
+            min_value = x
+    
+    print(list(round(x, 4) for x in number_list))
+    print(min(number_list), max(number_list))
 
+    pair_list = [(random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)) for _ in range(10)]
+    print(min(pair_list, key=lambda t: t[1]), max(pair_list, key=lambda t: t[2]))
+    
+    
+    
+    
+    
 
 def multiple_return_values():
     
@@ -190,12 +214,19 @@ def multiple_return_values():
 
     list_brackets.append(3)
     list_constructor.append(17)
-    
+
+
+def riemann_zeta():
+    z = float(input('Enter the variable z: '))
+    N = int(input('Enter the number of terms: '))
+    print(sum(1/(n ** z) for n in range(1, N + 1)))
+	
+
 # file_error()
 # try_try_and_try_again()
 # try_convert()
 # check_convert()
-# more_sorting()
 # lambda_stuff()
-# mapping_examples()
-multiple_return_values()
+mapping_examples()
+# riemann_zeta()
+# multiple_return_values()
