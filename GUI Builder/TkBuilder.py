@@ -1,7 +1,11 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from tkinter import simpledialog
-# from tkinter import colorchooser
+from tkinter import colorchooser
+# from tkinter import simpledialog
+
+class PlaceChoiceFrame(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master)
 
 
 class GridChoiceFrame(tk.Frame):
@@ -12,16 +16,13 @@ class GridChoiceFrame(tk.Frame):
 class PackChoiceFrame(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
+        self.pack_example()
 
     def pack_example(self):
-        self.anchor_var = tk.IntVar(self)
-        self.anchor_var.set(0)
-        self.side_var = tk.IntVar(self)
-        self.side_var.set(0)
-        self.expand_var = tk.IntVar(self)
-        self.expand_var.set(0)
-        self.fill_var = tk.IntVar(self)
-        self.fill_var.set(0)
+        self.anchor_var = tk.IntVar(self, value=0)
+        self.side_var = tk.IntVar(self, value=0)
+        self.expand_var = tk.IntVar(self, value=0)
+        self.fill_var = tk.IntVar(self, value=0)
 
         internal_frame = tk.Frame(self, background='white')
         button_frame = tk.Frame(self)
@@ -69,18 +70,35 @@ class TkBuilder(tk.Tk):
 
         def create_layout_manager(self):
             component_frame = tk.Frame(self)
-            block_frame = tk.Frame(self)
+            block_frame = tk.Frame(self, width=800)
             top_block_frame = tk.Frame(block_frame)
 
-            self.widget_tree = ttk.Treeview(component_frame)
-            self.variable_tree = ttk.Treeview(component_frame)
+            self.widget_tree = ttk.Treeview(component_frame, selectmode='extended', columns=('Type', 'Parameters'))
+            self.variable_tree = ttk.Treeview(component_frame, selectmode='extended', columns=('Type', 'Value'))
+
+            self.widget_tree.heading('#0', text='Widget')
+            self.widget_tree.heading('Type', text='Type')
+            self.widget_tree.heading('Parameters', text='Parameters')
+
+            self.variable_tree.heading('#0', text='Variable')
+            self.variable_tree.heading('Type', text='Type')
+            self.variable_tree.heading('Value', text='Value')
 
             self.widget_tree.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
             self.variable_tree.pack(expand=True, fill=tk.BOTH, side=tk.RIGHT)
             component_frame.pack(side=tk.LEFT, fill=tk.Y)
-            self.choice_variable = tk.StringVar(self, value='')
+            self.widget_choice = tk.StringVar(self, value='')
+            self.select_layout_type = tk.IntVar(self, value=0)
 
-            choice_box = ttk.Combobox(top_block_frame, values=TkBuilder.component_types, textvariable=self.choice_variable)
+            layout_choice_frame = tk.Frame(top_block_frame)
+            tk.Radiobutton(layout_choice_frame, text='Pack Layout', value=0, variable=self.select_layout_type).pack(side=tk.TOP, anchor=tk.W)
+            tk.Radiobutton(layout_choice_frame, text='Grid Layout', value=1, variable=self.select_layout_type).pack(side=tk.TOP, anchor=tk.W)
+            tk.Radiobutton(layout_choice_frame, text='Place Layout', value=2, variable=self.select_layout_type).pack(side=tk.TOP, anchor=tk.W)
+            layout_choice_frame.pack(side=tk.BOTTOM)
+
+            self.select_layout_type.trace('w', self.change_layout_frame)
+
+            choice_box = ttk.Combobox(top_block_frame, values=TkBuilder.component_types, textvariable=self.widget_choice)
             choice_box.pack(side=tk.TOP, fill=tk.X, expand=True)
             top_block_frame.pack(side=tk.TOP, fill=tk.X, expand=True)
             block_frame.pack(side=tk.RIGHT, fill=tk.Y)
@@ -100,9 +118,19 @@ class TkBuilder(tk.Tk):
         create_layout_manager(self)
         build_main_menu(self)
 
+    def change_layout_frame(self, *args):
+        print('changing layout frame', self.select_layout_type, args)
+
+        if self.select_layout_type.get() == 0:
+            print('pack layout')
+        elif self.select_layout_type.get() == 1:
+            print('grid layout')
+        elif self.select_layout_type.get() == 2:
+            print('place layout')
+
 
     def create_new_layout(self):
-        pass
+        print('creating new layout')
 
 
 if __name__ == '__main__':

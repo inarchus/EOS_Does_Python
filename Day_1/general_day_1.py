@@ -5,14 +5,7 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 import datetime as dt
 import string
-
-
-def datetime_stuff():
-
-    random_time = dt.datetime(year=2019, month=7, day=24, hour=13, minute=12, second=1)
-    current_time = dt.datetime.now()
-    print(random_time, current_time)
-
+import gc
 
 def message_boxes():
     messagebox.showinfo('This is the title.', 'This is the Message')
@@ -176,38 +169,63 @@ def enumerate_example():
     for i, x, y in enumerate(L):
         print(i, x, y)
 
-
-def file_operations():
-    # if you run this, you'll have to redownload the file
-    # first_file = open('first_file.txt', 'wb')
-    # first_file.write()
-    # first_file = open('first_file.txt', 'w+')
-
-    first_file = open('first_file.txt', 'r+')
-    print(first_file.readlines())
-    first_file.close()
-
-    first_file = open('first_file.txt', 'a+')
-    print(first_file.readlines())
-    first_file.close()
     
-    def file_ops():
-        try:
-            f = open('blah.txt', 'r')
-            # really this means do something with the file
-            print(f.readlines())
-        except IOError:
-            print('The file was unable to be opened')
-        else:
-            f.close()
-            
-    # file_ops()
-    
-    
-    
-    
+def pass_the_nop():
+    """
+        pass is the python nop, which is necessary because of the white space sensitivity.
+    """
+
+    for i in range(100):
+        pass
+
+    f = open('first_file.txt', 'r')
+    while f.readline():
+        pass
+
+    x = 3; y = 2
+    if x < y:
+        pass
+
+    try:
+        pass
+    except IOError:
+        pass
+
+    def fun_with_functions(alpha, beta):
+        pass
+
+        r = alpha
+        s = beta
+
+    fun_with_functions(3, 2)
 
 
-#length_and_string()
-#enumerate_example()
-file_operations()
+def calling_named_arguments():
+
+    def call_me(name, number, message, **kwargs):
+        print(*list((x, kwargs[x]) for x in kwargs))
+        print(name, number, message)
+
+    call_me(name='Eric', number='555-444-3333', message='you know I love Python',
+            payment=20, upbraidment=3, strength=1, charisma=17)
+    call_me(payment=15, name='Ru', message='Got Beef', number='777-888-7788')
+
+
+def scope():
+    s = 17
+
+    def sub_function(x, y):
+        r = x | y + 1
+        v = r & y - 1 + s
+        # print(vars(), globals())
+        return v ** 2
+
+    t = sub_function(13, 19)
+    print(t)
+    # print(vars())
+
+# pass_the_nop()
+# length_and_string()
+# enumerate_example()
+# calling_named_arguments()
+scope()
