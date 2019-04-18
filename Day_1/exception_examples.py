@@ -50,8 +50,37 @@ def ready_to_cause_trouble():
         print('no problem my dudes')
 
 
+class BlahObject:
+    def __init__(self, blah):
+        self.blah=blah
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.blah = 0
+
+
+def with_examples():
+    with open('first_file.txt', 'r') as f:
+        for line in f:
+            print(line.strip())
+
+    if False:
+        with open('definitely_doesnt_exist.txt', 'r') as f:
+            for line in f:
+                print(line)
+
+    with BlahObject(3) as f, BlahObject(5) as g:
+        print(f.blah, g.blah)
+
+    print(f.blah, g.blah)
+
+
+
 # try_except_else()
 # try_except_finally()
 # except_as()
-ready_to_cause_trouble()
+# ready_to_cause_trouble()
+with_examples()
 
