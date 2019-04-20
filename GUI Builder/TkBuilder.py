@@ -2,6 +2,86 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import colorchooser
 # from tkinter import simpledialog
+import json
+
+
+class NumberEntry(tk.Entry):
+    def __init__(self, *args, **kwargs):
+        kwargs.update({'validate': 'key', 'validatecommand': self.ensure_numerical})
+        super().__init__(*args, **kwargs)
+
+    def ensure_numerical(self):
+        '''        try:
+            print(self.get())
+            int(self.get())
+            return True
+        except ValueError:
+            return False
+        '''
+        return True
+
+
+class ComponentFrame(tk.Frame):
+    def __init__(self, master, parameters={}):
+        '''
+            the format should be:
+            self.parameters[name] = {'name': widget_name, 'type': widget_type, 'label_text': prompt, 'variable_type': variable_type,
+                    'values': list_of_values, 'variable_value': starting_value}
+        '''
+        super().__init__(master)
+        self.parameters = parameters
+        self.variables = {}
+        self.components = {}
+        self.construct_components(self.parameters, self.components)
+
+    def construct_components(self, parameters, components=None):
+        if not components:
+            components = self.components
+        print(parameters)
+        for i, parameter_title in enumerate(parameters):
+
+            parameter = parameters[parameter_title]
+            if 'variable_type' in parameter and parameter['name'] not in self.variables:
+                if 'variable_value' in parameter:
+                    self.variables[parameter['name']] = parameter['variable_type'](self, value=parameter['variable_value'])
+                else:
+                    self.variables[parameter['name']] = parameter['variable_type'](self)
+
+            components[parameter['name'] + '_label'] = tk.Label(self, text=parameter['label_text'] if 'label_text' in parameter else parameter['name'])
+            if 'variable_type' in parameter:
+                if isinstance(parameter['variable_type'], tk.StringVar):
+                    components[parameter['name']] = parameter['type'](self, textvariable=self.variables[parameter['name']])
+                else:
+                    components[parameter['name']] = parameter['type'](self, variable=self.variables[parameter['name']])
+            else:
+                components[parameter['name']] = parameter['type'](self)
+
+            for x in ['background', 'command', 'font', 'ipadx', 'ipady', 'padx', 'pady', 'relief', 'state', 'text', 'values']:
+                if x in parameter:
+                    components[parameter['name']][x] = parameter[x]
+
+            components[parameter['name'] + '_label'].grid(row=i, column=0)
+            components[parameter['name']].grid(row=i, column=1)
+
+    def get_variable_instant(self):
+        return {v: v.get() for v in self.variables}
+
+    def load_components(self, load_file):
+        self.file_name = load_file
+        try:
+            with open(load_file, 'r') as json_file:
+                json_data = json.loads(''.join(json_file.readlines()))
+                print(json_data)
+        except OSError as e:
+            print(e)
+
+    def save_component(self):
+        try:
+            with open(self.file_name, 'w') as write_json:
+                write_json.write(json.dumps(self.json_data))
+        except OSError as e:
+            print(e)
+
 
 
 class PlaceChoiceFrame(tk.Frame):
@@ -16,6 +96,9 @@ class PlaceChoiceFrame(tk.Frame):
         tk.Entry(self, textvariable=self.x_place_string).grid(row=1, column=1)
         tk.Entry(self, textvariable=self.y_place_string).grid(row=1, column=3)
 
+    def get_layout_arguments(self):
+        return {}
+
 
 class GridChoiceFrame(tk.Frame):
     def __init__(self, master):
@@ -28,6 +111,9 @@ class GridChoiceFrame(tk.Frame):
         tk.Entry(self, textvariable=self.row_string).grid(row=1, column=1)
         tk.Entry(self, textvariable=self.col_string).grid(row=1, column=3)
 
+    def get_layout_arguments(self):
+        return {}
+
 
 class PackChoiceFrame(tk.Frame):
     def __init__(self, master):
@@ -36,7 +122,7 @@ class PackChoiceFrame(tk.Frame):
         self.anchor_var = tk.StringVar(self, value='tk.NW')
         self.side_var = tk.StringVar(self, value='tk.LEFT')
         self.expand_var = tk.IntVar(self, value=0)
-        self.fill_var = tk.IntVar(self, value=0)
+        self.fill_var = tk.StringVar(self, value=0)
 
         internal_frame = tk.Frame(self, background='white')
         button_frame = tk.Frame(self)
@@ -72,12 +158,61 @@ class PackChoiceFrame(tk.Frame):
         internal_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         button_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
+    def get_layout_arguments(self):
+        arguments = {}
+        anchor_dict = {'tk.NW': 'nw', 'tk.N': 'n', 'tk.NE': 'ne', 'tk.W': 'w', 'tk.CENTER': 'center', 'tk.E': 'e', 'tk.SE': 'se', 'tk.S': 's', 'tk.SW': 'sw'}
+        if self.anchor_var.get() in anchor_dict:
+            arguments['anchor'] = anchor_dict[self.anchor_var.get()]
+        arguments['expand'] = True if self.expand_var.get() else False
+        fill_dict = {'tk.X': tk.X, 'tk.Y': tk.Y, 'tk.BOTH': tk.BOTH}
+        print(self.fill_var.get())
+        if self.fill_var.get() in fill_dict:
+            arguments['fill'] = fill_dict[self.fill_var.get()]
+        side_dict = {'tk.LEFT': tk.LEFT, 'tk.RIGHT': tk.RIGHT, 'tk.TOP': tk.TOP, 'tk.BOTTOM': tk.BOTTOM}
+        if self.side_var.get() in side_dict:
+            arguments['side'] = side_dict[self.side_var.get()]
+
+        return arguments
+
 
 class TkBuilder(tk.Tk):
+    """
+            the format should be:
+            self.parameters[name] = {'name': widget_name, 'type': widget_type, 'label_text': prompt, 'variable_type': variable_type,
+                    'values': list_of_values, 'variable_value': starting_value}
+
+    """
+    x = {'test_button': {'name': 'Test Button', 'type': tk.Button, 'label_text': 'click me', 'state': tk.DISABLED, 'text': 'Button Title'},
+     'test_edit': {'name': 'Test Edit', 'type': tk.Entry, 'label_text': 'edit me', 'variable_type': tk.StringVar}}
 
     component_types = {'Label': tk.Label, 'Canvas': tk.Canvas, 'Button': tk.Button, 'Radiobutton': tk.Radiobutton, 'Checkbutton': tk.Checkbutton, 'Frame': tk.Frame,
                        'Listbox': tk.Listbox, 'ttk.Combobox': ttk.Combobox, 'ttk.Notebook': ttk.Notebook, 'ttk.Treeview': ttk.Treeview,
                        'ttk.Menubutton': ttk.Menubutton, 'ttk.Progressbar': ttk.Progressbar}
+    ComponentMap = {
+        'Label': {
+                'text': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'Button': {},
+        'Radiobutton': {},
+        'Checkbutton': {},
+        'Canvas': {},
+        'Frame': {},
+        'Listbox': {},
+        'ttk.Combobox': {},
+        'ttk.Notebook': {},
+        'ttk.Treeview': {},
+        'ttk.Menubutton': {},
+        'ttk.Progressbar': {}
+    }
 
     def __init__(self):
         super().__init__()
@@ -87,7 +222,6 @@ class TkBuilder(tk.Tk):
         self.variable_map = {}
         self.component_map = {}
         self.draw_window = None
-
 
         def build_main_menu(self):
             menubar = tk.Menu(self)
@@ -140,7 +274,7 @@ class TkBuilder(tk.Tk):
             self.widget_frame.pack(side=tk.LEFT, fill=tk.Y, expand=True)
             self.variable_frame.pack(side=tk.LEFT, fill=tk.Y, expand=True)
 
-            choice_box = ttk.Combobox(layout_choice_frame, values=list(TkBuilder.component_types.keys()), textvariable=self.widget_choice)
+            choice_box = ttk.Combobox(layout_choice_frame, values=list(TkBuilder.component_types.keys()), state='readonly', textvariable=self.widget_choice)
             choice_box.pack(side=tk.TOP)
 
             self.new_widget_name = tk.StringVar(self, value='')
@@ -151,9 +285,35 @@ class TkBuilder(tk.Tk):
             top_block_frame.pack(side=tk.TOP, fill=tk.X, expand=True)
             self.block_frame.pack(side=tk.RIGHT, fill=tk.Y)
 
+            choice_box.bind("<<ComboboxSelected>>", self.draw_component_frame)
+
         create_layout_manager(self)
         build_main_menu(self)
         self.change_layout_frame()
+        self.component_frames = self.create_component_frames()
+
+
+    def create_component_frames(self):
+
+        the_frames = {}
+        for component in TkBuilder.ComponentMap:
+            if 'name' not in component:
+                TkBuilder.ComponentMap[component]['name'] = component
+            if 'label_text' not in component:
+                name = TkBuilder.ComponentMap[component]['name']
+                TkBuilder.ComponentMap[component]['label_text'] = name[0:1].upper() + name[1:].lower()
+
+            the_frames[component] = ComponentFrame(self, TkBuilder.ComponentMap[component])
+
+        return the_frames
+
+    def draw_component_frame(self, *args):
+        widget_type = self.widget_choice.get()
+        if widget_type in self.component_frames:
+            for frame_name in self.component_frames:
+                self.component_frames[frame_name].pack_forget()
+            self.component_frames[widget_type].pack(side=tk.LEFT, fill=tk.Y, expand=True)
+
 
     def create_new_widget(self):
         print('creating new widget', self.widget_choice.get(), 'named', self.new_widget_name.get())
@@ -163,7 +323,7 @@ class TkBuilder(tk.Tk):
 
         if widget_type in TkBuilder.component_types:
             if widget_name not in self.component_map:
-                arguments = self.get_widget_arguments()
+                arguments = self.get_widget_arguments(widget_name, widget_type)
                 self.component_map[widget_name] = TkBuilder.component_types[widget_type](self.draw_window, **arguments)
                 if self.select_layout_type.get() == 0:
                     self.component_map[widget_name].pack(**self.pack_layout_frame.get_layout_arguments())
@@ -175,8 +335,8 @@ class TkBuilder(tk.Tk):
             else:
                 print('component with that name already exists')
 
-    def get_widget_arguments(self):
-        return {}
+    def get_widget_arguments(self, widget_name, widget_type):
+        return {'text': widget_name}
 
     def change_layout_frame(self, *args):
 
@@ -201,6 +361,19 @@ class TkBuilder(tk.Tk):
             self.draw_window.title('Layout Drawing Window')
 
             self.widget_tree.insert('', tk.END, text='Main Window', values=['tk.Toplevel', ''], open=True)
+
+
+def build_test_rig():
+    """
+            the format should be:
+            self.parameters[name] = {'name': widget_name, 'type': widget_type, 'label_text': prompt, 'variable_type': variable_type,
+                    'values': list_of_values, 'variable_value': starting_value}
+
+        {'test_button': {'name': 'Test Button', 'type': tk.Button, 'label_text': 'click me', 'state': tk.DISABLED, 'text': 'Button Title'},
+            'test_edit': {'name': 'Test Edit', 'type': tk.Entry, 'label_text': 'edit me', 'variable_type': tk.StringVar} }
+    """
+    return {'test_button': {'name': 'Test Button', 'type': tk.Button, 'label_text': 'click me', 'state': tk.DISABLED, 'text': 'Button Title'},
+            'test_edit': {'name': 'Test Edit', 'type': tk.Entry, 'label_text': 'edit me', 'variable_type': tk.StringVar} }
 
 
 if __name__ == '__main__':
