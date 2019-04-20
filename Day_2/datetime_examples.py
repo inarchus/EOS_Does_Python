@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 import random
 
+def datetime_stuff():
+
+    random_time = datetime(year=2019, month=7, day=24, hour=13, minute=12, second=1)
+    current_time = datetime.now()
+    print(random_time, current_time)
+
+
 def stripping_time():
     time_string_1 = '1969.7.16'
     moon_time = datetime.strptime(time_string_1, '%Y.%m.%d')
