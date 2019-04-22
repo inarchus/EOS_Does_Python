@@ -37,7 +37,6 @@ class ComponentFrame(tk.Frame):
     def construct_components(self, parameters, components=None):
         if not components:
             components = self.components
-        print(parameters)
         for i, parameter_title in enumerate(parameters):
 
             parameter = parameters[parameter_title]
@@ -83,7 +82,6 @@ class ComponentFrame(tk.Frame):
             print(e)
 
 
-
 class PlaceChoiceFrame(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -112,7 +110,7 @@ class GridChoiceFrame(tk.Frame):
         tk.Entry(self, textvariable=self.col_string).grid(row=1, column=3)
 
     def get_layout_arguments(self):
-        return {}
+        return {'row': int(self.row_string.get()), 'column': int(self.col_string.get())}
 
 
 class PackChoiceFrame(tk.Frame):
@@ -165,7 +163,7 @@ class PackChoiceFrame(tk.Frame):
             arguments['anchor'] = anchor_dict[self.anchor_var.get()]
         arguments['expand'] = True if self.expand_var.get() else False
         fill_dict = {'tk.X': tk.X, 'tk.Y': tk.Y, 'tk.BOTH': tk.BOTH}
-        print(self.fill_var.get())
+        # print(self.fill_var.get())
         if self.fill_var.get() in fill_dict:
             arguments['fill'] = fill_dict[self.fill_var.get()]
         side_dict = {'tk.LEFT': tk.LEFT, 'tk.RIGHT': tk.RIGHT, 'tk.TOP': tk.TOP, 'tk.BOTTOM': tk.BOTTOM}
@@ -201,17 +199,132 @@ class TkBuilder(tk.Tk):
                 'ipady': {'name': 'ipady', 'type': tk.Entry},
                 'width': {'name': 'width', 'type': tk.Entry},
             },
-        'Button': {},
-        'Radiobutton': {},
-        'Checkbutton': {},
-        'Canvas': {},
-        'Frame': {},
-        'Listbox': {},
-        'ttk.Combobox': {},
-        'ttk.Notebook': {},
-        'ttk.Treeview': {},
-        'ttk.Menubutton': {},
-        'ttk.Progressbar': {}
+        'Button': {
+                'text': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'Radiobutton': {
+                'text': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+                'variable': {'name': 'variable', 'type': tk.Entry}
+            },
+        'Checkbutton': {
+                'text': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+                'textvariable': {'name': 'textvariable', 'type': tk.Entry}
+            },
+        'Canvas': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'Frame': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'Listbox': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'ttk.Combobox': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'ttk.Notebook': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'ttk.Treeview': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'ttk.Menubutton': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
+        'ttk.Progressbar': {'name': {'name': 'text', 'type': tk.Entry},
+                'justify': {'name': 'justify', 'type': ttk.Combobox, 'values': ['None', tk.LEFT, tk.RIGHT, tk.CENTER], 'state': 'readonly'},
+                'state': {'name': 'state', 'type': ttk.Combobox, 'values': ['None', tk.NORMAL, tk.ACTIVE, tk.DISABLED], 'state': 'readonly'},
+                'relief': {'name': 'relief', 'type': ttk.Combobox, 'values': ['None', tk.FLAT, tk.SUNKEN, tk.RAISED, tk.GROOVE, tk.RIDGE], 'state': 'readonly'},
+                'background': {'name': 'background', 'type': tk.Entry},
+                'padx': {'name': 'padx', 'type': NumberEntry},
+                'pady': {'name': 'pady', 'type': NumberEntry},
+                'ipadx': {'name': 'ipadx', 'type': tk.Entry},
+                'ipady': {'name': 'ipady', 'type': tk.Entry},
+                'width': {'name': 'width', 'type': tk.Entry},
+            },
     }
 
     def __init__(self):
@@ -270,6 +383,35 @@ class TkBuilder(tk.Tk):
             tk.Radiobutton(layout_choice_frame, text='Place Layout', value=2, variable=self.select_layout_type).pack(side=tk.TOP, anchor=tk.W)
             layout_choice_frame.pack(side=tk.LEFT)
 
+            # VARIABLE CHOICE FRAME
+            variable_choice_frame = tk.Frame(self.variable_frame)
+            self.select_variable_type = tk.IntVar(self, value=0)
+            self.select_variable_type.trace('w', lambda *args: self.change_variable_type)
+            self.select_label = tk.StringVar(self.variable_frame)
+            self.variable_value = tk.StringVar(self.variable_frame)
+            self.boolean_value = tk.BooleanVar(self.variable_frame)
+
+            left_var_frame = tk.Frame(variable_choice_frame)
+
+            tk.Radiobutton(left_var_frame, text='Boolean Variable', value=0, variable=self.select_variable_type, command=self.change_variable_type).pack(side=tk.TOP, anchor=tk.W)
+            tk.Radiobutton(left_var_frame, text='Integer Variable', value=1, variable=self.select_variable_type, command=self.change_variable_type).pack(side=tk.TOP, anchor=tk.W)
+            tk.Radiobutton(left_var_frame, text='String Variable', value=2, variable=self.select_variable_type, command=self.change_variable_type).pack(side=tk.TOP, anchor=tk.W)
+            tk.Radiobutton(left_var_frame, text='Float Variable', value=3, variable=self.select_variable_type, command=self.change_variable_type).pack(side=tk.TOP, anchor=tk.W)
+
+            left_var_frame.pack(side=tk.LEFT)
+
+            right_var_frame = tk.Frame(variable_choice_frame)
+            self.variable_radio_frame = tk.Frame(right_var_frame)
+
+            tk.Radiobutton(self.variable_radio_frame, text="False", value=False, variable=self.boolean_value).pack(side=tk.LEFT)
+            tk.Radiobutton(self.variable_radio_frame, text="True", value=True, variable=self.boolean_value).pack(side=tk.LEFT)
+
+            self.variable_entry = tk.Entry(right_var_frame, textvariable=self.variable_value, width=20)
+
+            right_var_frame.pack(side=tk.RIGHT)
+
+            variable_choice_frame.pack(side=tk.BOTTOM)
+
             self.select_layout_type.trace('w', self.change_layout_frame)
             self.widget_frame.pack(side=tk.LEFT, fill=tk.Y, expand=True)
             self.variable_frame.pack(side=tk.LEFT, fill=tk.Y, expand=True)
@@ -291,17 +433,27 @@ class TkBuilder(tk.Tk):
         build_main_menu(self)
         self.change_layout_frame()
         self.component_frames = self.create_component_frames()
+        if self.component_frames:
+            self.component_frames[list(self.component_frames.keys())[0]].pack(side=tk.LEFT, fill=tk.Y, expand=True)
 
+    def change_variable_type(self):
+        if self.select_variable_type.get():
+            self.variable_radio_frame.pack_forget()
+            self.variable_entry.pack()
+        else:
+            self.variable_entry.pack_forget()
+            self.variable_radio_frame.pack()
 
     def create_component_frames(self):
 
         the_frames = {}
         for component in TkBuilder.ComponentMap:
-            if 'name' not in component:
-                TkBuilder.ComponentMap[component]['name'] = component
-            if 'label_text' not in component:
-                name = TkBuilder.ComponentMap[component]['name']
-                TkBuilder.ComponentMap[component]['label_text'] = name[0:1].upper() + name[1:].lower()
+            for x in TkBuilder.ComponentMap[component]:
+                if 'name' not in TkBuilder.ComponentMap[component][x]:
+                    TkBuilder.ComponentMap[component][x]['name'] = x
+                if 'label_text' not in TkBuilder.ComponentMap[component]:
+                    name = TkBuilder.ComponentMap[component][x]['name']
+                    TkBuilder.ComponentMap[component][x]['label_text'] = name[0:1].upper() + name[1:].lower()
 
             the_frames[component] = ComponentFrame(self, TkBuilder.ComponentMap[component])
 
@@ -313,7 +465,6 @@ class TkBuilder(tk.Tk):
             for frame_name in self.component_frames:
                 self.component_frames[frame_name].pack_forget()
             self.component_frames[widget_type].pack(side=tk.LEFT, fill=tk.Y, expand=True)
-
 
     def create_new_widget(self):
         print('creating new widget', self.widget_choice.get(), 'named', self.new_widget_name.get())

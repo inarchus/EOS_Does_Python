@@ -36,7 +36,6 @@ def create_frame(window):
     label_in_frame = tk.Label(frame, text='This label will be in the frame, above the button',
                               background='tomato2')
     button_in_frame = tk.Button(frame, text='This button is in the Frame', command=frame_click)
-    button_in_frame = tk.Button(frame, text='Open Pack Example', command=PackExample)
 
     label_in_frame.pack()
     button_in_frame.pack()
