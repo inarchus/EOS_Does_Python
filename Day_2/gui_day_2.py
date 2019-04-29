@@ -7,12 +7,16 @@ import os
 class Toolbar(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self['relief'] = 'ridge'
         self.buttons = {}
+        self.images = []
 
     def addButton(self, name, image, command):
-        print('adding', name)
-        self.buttons[name] = tk.Button(self, image=image, command=command, relief='flat')
+        self.buttons[name] = tk.Button(self, image=image, command=command, relief='groove')
         self.buttons[name].pack(side=tk.LEFT, padx=2, pady=2)
+
+    def addImage(self, image):
+        self.images.append(image)
 
 def click_me():
     messagebox.showinfo('Click Event', 'You have clicked, Good Work')
@@ -402,6 +406,7 @@ def checkbutton_boolean_example(parent):
 
 
 def canvas_example(parent):
+
     top = tk.Toplevel(parent)
     top.title('We are going to make art now')
     top.geometry('800x800')
@@ -409,13 +414,12 @@ def canvas_example(parent):
     toolbar = Toolbar(top)
     for file in ['line.gif', 'rect.gif', 'circle.gif', 'arc.gif', 'poly.gif']:
         the_image = tk.PhotoImage(file=os.path.join('ToolbarImages', file))
-        if not the_image:
-            print('the image did not load')
+        toolbar.addImage(the_image)
         toolbar.addButton(file.split('.')[0], the_image, 0)
 
     toolbar.pack(side=tk.TOP, fill=tk.X)
 
-    the_canvas = tk.Canvas(top, background='green')
+    the_canvas = tk.Canvas(top, background='white')
     the_canvas.pack(expand=True, fill=tk.BOTH)
     the_canvas.create_line(0, 0, 200, 200)
 

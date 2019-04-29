@@ -39,6 +39,7 @@ class FindPrimesWindow(tk.Tk):
             if self.is_prime(n):
                 self.primes.append(n)
             n += 1
+        print('You\'ve Killed Me!')
 
     def __del__(self):
         self.terminate = True
