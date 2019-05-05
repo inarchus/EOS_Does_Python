@@ -8,6 +8,7 @@ from threading import Thread
 class WebThread(Thread):
     def __init__(self, url, retries):
         super().__init__()
+        # super().__init__(daemon=True)
         self.url = url
         self.retries = retries
         self.data = ''
