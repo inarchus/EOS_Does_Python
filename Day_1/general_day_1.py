@@ -224,8 +224,23 @@ def scope():
     print(t)
     # print(vars())
 
+
+def upper_and_lower_egypt():
+    s1 = 'hat'
+    s2 = 'HAT'
+    k1 = 'This is a mixed string; With all kinds of & symbols and || things.  '
+    print(k1.upper())
+    print(s2.lower())
+
+    if s1 == s2:
+        print('they are the same')
+    elif s1.upper() == s2.upper():
+        print('they are essentially the same, modulo case')
+
+
 # pass_the_nop()
 # length_and_string()
 # enumerate_example()
 # calling_named_arguments()
-scope()
+# scope()
+upper_and_lower_egypt()

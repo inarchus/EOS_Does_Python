@@ -1,0 +1,113 @@
+{
+  "00": {
+    "prompt": "Enter a test pattern that takes any number of a's as the matched part of the string.  ",
+    "tests": [
+      "",
+      "a",
+      "aa",
+      "aaaaaaaaaaaaaaaa",
+      "aaaaaaaaaaaaaaaasdfsdfsdfsdfswerwerxv234.1,23,m1",
+      "sfji9jf993jmfiajeifnlknwfklenwf"
+    ],
+    "pattern": "a*",
+    "completion": "You've finished the first challenge, click next to continue.  "
+  },
+  "01": {
+    "prompt": "Give me a regex pattern which accepts strings containing any number of a's and then a single b.",
+    "tests": [
+      "aaab",
+      "b",
+      "aabb",
+      "aaaaaaaaaaaaaaaaab",
+      "asdfkakldfjaskldf",
+      "ababababababababab"
+    ],
+    "pattern": "a*b$",
+    "completion": "Very good, you must use $ at the end of the string to force it to only match with one b."
+  },
+  "02": {
+    "prompt": "Ok, let's use \\w to identify adverbs (words ending in ly). ",
+    "tests": [
+      "bigly",
+      "fire",
+      "reddish",
+      "firmly",
+      "absentmindedly"
+    ],
+    "pattern": "\\w+ly",
+    "completion": "There we go, click next to continue.  "
+  },
+  "03": {
+    "prompt": "Give me a regex that identifies any number of copies of abcd possibly missing b or c:",
+    "tests": [
+      "abcdabcdabcdabcdabcdabcd",
+      "abdacdabcdabcdadadadad",
+      "bdacabaklsdfjaioewfionfdiosf",
+      "adadadadadadadadad",
+      "aedadededadeadedadeadaead",
+      "abababababd",
+      ""
+    ],
+    "pattern": "(ab?c?d)*$",
+    "completion": "Even though the null pattern works, we have to make sure that we include the end of string to get rid of the bad matches.  "
+  },
+  "04": {
+    "prompt": "Give me a way to identify social security numbers.  Ignore any amount of whitespace between groups of digits.  311 - 13 - 1313 is therefore acceptable.  Use \\s* to eat up whitespace.  ",
+    "tests": [
+      "111-22-3333",
+      "717-82-8282",
+      "159   -  22 -    7277",
+      "  318   -  33 -    9911    ",
+      "asdfasdfasdf",
+      "1-2-3-4-1-2-3-4-1-2-4",
+      "111-111-111",
+      "111-11-1111a"
+    ],
+    "pattern": "\\s*\\d{3}\\s*[-]\\s*\\d{2}\\s*[-]\\s*\\d{4}\\s*$",
+    "completion": "Good, now we can identify SSNs, for whatever reason. "
+  },
+  "05": {
+    "prompt": "Give me email addresses starting with a letter (possibly containing numbers) with an @ sign, at ndc.nasa.gov",
+    "tests": [
+      "hello@ndc.nasa.gov",
+      "a1-2.b3@ndc.nasa.gov",
+      "blahblah7@ndc.nasa.gov",
+      "3a@ndc.nasa.gov",
+      "a12b3@ndc.nasa.gov",
+      "ttt222aaa111444ssssasdfadfasdf@ndc.nasa.gov",
+      "ttt222aaa111444ssssasdfadfasdf@nasa.gov",
+      "nope@microsoft.net"
+    ],
+    "pattern": "[a-zA-Z]\\w*[@]ndc\\.nasa\\.gov$",
+    "completion": "Cool.  "
+  },
+  "06": {
+    "prompt": "Now, for an easy one, match ",
+    "tests": [
+      "hello@ndc.nasa.gov",
+      "a1-2.b3@ndc.nasa.gov",
+      "blahblah7@ndc.nasa.gov",
+      "3a@ndc.nasa.gov",
+      "a12b3@ndc.nasa.gov",
+      "ttt222aaa111444ssssasdfadfasdf@ndc.nasa.gov",
+      "ttt222aaa111444ssssasdfadfasdf@nasa.gov",
+      "nope@microsoft.net"
+    ],
+    "pattern": "[a-zA-Z]\\w*[@]ndc\\.nasa\\.gov$",
+    "completion": "Cool.  "
+  },
+  "10": {
+    "prompt": "Try to give me a way to identify web addresses, letters or numbers of the format http or https://(x).(y).(z).com, ending in .com, .net, .edu, or .org",
+    "tests": [
+      "https://www.blah.com",
+      "http://math.umd.edu",
+      "http://seven.things.com",
+      "http://theatlantic.com",
+      "garble garble garble",
+      "ftp://this.is.not.going.to.work.com",
+      "http://a.b.c.d.e.f.g.h.i.j.net"
+    ],
+    "pattern": "http[s]?[:][/]{2}((\\w+)[.])+(com|net|edu|org)",
+    "completion": "That was hard.  "
+  }
+}
