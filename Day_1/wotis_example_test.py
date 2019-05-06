@@ -12,8 +12,8 @@ def baseline_read_wotis(file_name):
         split_line = line.strip().split('\t')
 
         if len(split_line) == 6:
-            current = {'orbit': int(split_line[0]), 'aos': datetime.strptime(split_line[1], '%Y/%j:%H:%M:%S'), 'los': datetime.strptime(split_line[2], '%Y/%j:%H:%M:%S'),
-                       'station': split_line[3], 'tr_code': split_line[5]}
+            # current = {'orbit': int(split_line[0]), 'aos': datetime.strptime(split_line[1], '%Y/%j:%H:%M:%S'), 'los': datetime.strptime(split_line[2], '%Y/%j:%H:%M:%S'), 'station': split_line[3], 'tr_code': split_line[5]}
+            current = {'orbit': int(split_line[0]), 'aos': split_line[1], 'los': split_line[2], 'station': split_line[3], 'tr_code': split_line[5]}
             total_day.append(current)
 
     wotis_file.close()
