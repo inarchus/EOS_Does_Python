@@ -1,11 +1,11 @@
+from datetime import datetime
 
 def read_wotis(file_name):
-    wotis_file = open(file_name)
-
-    for line in wotis_file:
-        print(line)
-
-    wotis_file.close()
+    """
+    :return a list of dictionaries containing an integer orbit number, datetime objects for aos and los, ignores the length of the contact,
+        contains keywords tr_code and station
+    """
+    pass
 
 
 if __name__ == '__main__':

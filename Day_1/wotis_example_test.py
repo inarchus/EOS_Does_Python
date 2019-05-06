@@ -1,14 +1,23 @@
 from unittest import TestCase
-from Day_1.wotis_example import read_wotis
+from datetime import datetime
+from wotis_example import read_wotis
 
 
 def baseline_read_wotis(file_name):
     wotis_file = open(file_name)
 
+    total_day = []
+
     for line in wotis_file:
-        print(line)
+        split_line = line.strip().split('\t')
+
+        if len(split_line) == 6:
+            current = {'orbit': int(split_line[0]), 'aos': datetime.strptime(split_line[1], '%Y/%j:%H:%M:%S'), 'los': datetime.strptime(split_line[2], '%Y/%j:%H:%M:%S'),
+                       'station': split_line[3], 'tr_code': split_line[5]}
+            total_day.append(current)
 
     wotis_file.close()
+    return current
 
 
 class WotisTester(TestCase):
@@ -19,4 +28,5 @@ class WotisTester(TestCase):
 
     def test_read_wotis_process(self):
         for i in range(10):
-            self.assertListEqual(baseline_read_wotis('Day_1\\test' + str(i + 1) + '.rpt'), read_wotis('Day_1\\test' + str(i + 1) + '.rpt'))
+            file = 'WotisExamples/AETHERParsedWOTIS' + str(i + 1).zfill(3) + '.rpt'
+            self.assertEqual(baseline_read_wotis(file), read_wotis(file))
