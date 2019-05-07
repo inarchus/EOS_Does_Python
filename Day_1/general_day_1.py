@@ -5,7 +5,8 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 import datetime as dt
 import string
-import gc
+from example_display import ExampleDisplay
+
 
 def message_boxes():
     messagebox.showinfo('This is the title.', 'This is the Message')
@@ -225,6 +226,7 @@ def scope():
     # print(vars())
 
 
+<<<<<<< Updated upstream
 def upper_and_lower_egypt():
     s1 = 'hat'
     s2 = 'HAT'
@@ -244,3 +246,27 @@ def upper_and_lower_egypt():
 # calling_named_arguments()
 # scope()
 upper_and_lower_egypt()
+=======
+def del_examples():
+    try:
+        x = 3
+        print(x)
+        del x
+        print(x)
+    except UnboundLocalError as err:
+        print('UnboundLocalError', err)
+    except NameError as err:
+        print('NameError', err)
+        
+        
+ted = ExampleDisplay('General Day 1 Examples')
+
+ted.register_example('Enumerate', enumerate_example)
+ted.register_example('Lengths of Arrays and Strings', length_and_string)
+ted.register_example('Pass the NOOP', pass_the_nop)
+ted.register_example('Named Arguments', calling_named_arguments)
+ted.register_example('Scope', scope)
+ted.register_example('Delete', del_examples)
+
+ted.mainloop()
+>>>>>>> Stashed changes
