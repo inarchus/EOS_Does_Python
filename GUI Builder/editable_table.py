@@ -5,16 +5,16 @@ class EditableTable(tk.Frame):
     def __init__(self, master, rows=0, cols=0):
         super().__init__(master)
         self.text_vars = [[tk.StringVar(master) for _ in range(cols)] for _ in range(rows)]
-        self.labels = [[tk.Label(master, textvariable=self.text_vars[i][j], borderwidth=1, relief='solid', takefocus=True) for j in range(cols)] for i in range(rows)]
+        self.labels = [[tk.Label(master, textvariable=self.text_vars[i][j], borderwidth=1,  width=10, relief='solid', takefocus=True) for j in range(cols)] for i in range(rows)]
         self.edit_var = tk.StringVar(master)
-        self.edit_box = tk.Entry(master, textvariable=self.edit_var)
+        self.edit_box = tk.Entry(master, width=10, textvariable=self.edit_var)
         self.edit_box.bind('<Return>', self.exit_label)
 
         for i in range(rows):
             for j in range(cols):
                 self.text_vars[i][j].set(str((i, j)))
                 self.labels[i][j].grid(row=i, column=j, sticky='news')
-                self.labels[i][j].bind('<Button-1>', lambda event, row=i,col=j: self.label_click(row, col))
+                self.labels[i][j].bind('<Button-1>', lambda event, row=i, col=j: self.label_click(row, col))
 
         self.current = None
 
@@ -40,5 +40,5 @@ if __name__ == '__main__':
     main_window = tk.Tk()
     main_window.geometry('500x500')
     main_window.title('test table')
-    table = EditableTable(main_window, 100, 10)
+    table = EditableTable(main_window, 10, 10)
     main_window.mainloop()

@@ -18,6 +18,7 @@ def sort_vs_sorted():
 class SomeError(Exception):
     pass
 
+
 def try_try_and_try_again():
     try:
         pass
