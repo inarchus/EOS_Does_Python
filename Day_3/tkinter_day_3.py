@@ -260,11 +260,37 @@ class ProgressbarExample(tk.Tk):
         self.title('Progress Bar Example')
 
 
+class TheProtocol(tk.Tk):
+
+    def __init__(self):
+        super().__init__()
+        self.geometry('800x800')
+        self.title('WM_PROTOCOL Tutorial')
+
+        # self.wm_protocol('WM_TAKE_FOCUS', self.take_focus)
+        self.wm_protocol('WM_DELETE_WINDOW', self.window_deleting)
+        self.bind('<FocusIn>', self.take_focus)
+        self.bind('<FocusOut>', self.lose_focus)
+
+    def window_deleting(self):
+        print('the window is closing')
+        # you must call this otherwise it will not destroy the window.
+        self.destroy()
+
+    def take_focus(self, *args):
+        print('taking focus now')
+
+    def lose_focus(self, *args):
+        print('losing focus now')
+
+
 if __name__ == '__main__':
     # s = ttk.Treeview(None)['style']
     # ComboboxExample().mainloop()
     # ListboxExample().mainloop()
-    MenuExample().mainloop()
+    # MenuExample().mainloop()
 
-    print(ttk.Style().element_names())
-    print(ttk.Style().theme_names())
+    TheProtocol().mainloop()
+
+    # print(ttk.Style().element_names())
+    # print(ttk.Style().theme_names())
