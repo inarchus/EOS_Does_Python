@@ -1,5 +1,7 @@
 import random
+import string
 from datetime import datetime, timedelta
+from example_display import ExampleDisplay
 
 def sort_vs_sorted():
     L = [random.randint(0, 100) for _ in range(10)]
@@ -87,7 +89,25 @@ def file_error():
 
 
 def lbyl_vs_eapf():
-    pass
+
+    try:
+        x = int(input('Enter an Integer'))
+    except ValueError:
+        print('Unable to Convert')
+    else:
+        print(x)
+
+    s = input('Enter an Integer')
+    try_to_convert = True
+    for c in s.split():
+        if c not in string.digits:
+            try_to_convert = False
+
+    if try_to_convert:
+        x = int(s)
+        print(x)
+    else:
+        print('not going to convert')
 
 
 def lambda_stuff():
@@ -112,11 +132,9 @@ def lambda_stuff():
     print((lambda x: x if x % 2 else 0)(16))
     print((lambda x: x if x % 2 else 0)(3))
 
-    iterable = iter()
     def func():
-        pass
-
-    map(func, iterable)
+        iterable = iter()
+        map(func, iterable)
 
     print((lambda x: x * x)(3))
     print((lambda x: x * x)(17))
@@ -179,7 +197,17 @@ def mapping_examples():
     
     
     
-    
+def tuples():
+    x = (2, 5, 6)
+    y = ('hello', 'goodbye', 'peace')
+    print(x, y)
+    print(x[2], y[1])
+
+    try:
+        x[2] = 3
+    except TypeError as err:
+        print(err)
+
     
 
 def multiple_return_values():
@@ -221,13 +249,19 @@ def riemann_zeta():
     z = float(input('Enter the variable z: '))
     N = int(input('Enter the number of terms: '))
     print(sum(1/(n ** z) for n in range(1, N + 1)))
-	
 
-# file_error()
-# try_try_and_try_again()
-# try_convert()
-# check_convert()
-# lambda_stuff()
-mapping_examples()
-# riemann_zeta()
-# multiple_return_values()
+
+if __name__ == '__main__':
+    examples = ExampleDisplay('General Day 2')
+    examples.register_example('File Error', file_error)
+    examples.register_example('Try Convert', try_convert)
+    examples.register_example('Try and Try Again', try_try_and_try_again)
+    examples.register_example('Check Convert', check_convert)
+    examples.register_example('Lambda Stuff', lambda_stuff)
+    examples.register_example('Mapping Examples', mapping_examples)
+    examples.register_example('Riemann Zeta', riemann_zeta)
+    examples.register_example('Multiple Return Values', multiple_return_values)
+    examples.register_example('Look Before You Leap', lbyl_vs_eapf)
+    examples.register_example('Tuples', tuples)
+
+    examples.mainloop()
